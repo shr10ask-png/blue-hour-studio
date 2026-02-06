@@ -304,14 +304,14 @@ document.addEventListener("DOMContentLoaded", () => {
      MUSIC (FINAL)
      ======================= */
   const PLAYLISTS = {
-    lofi: ["lofi_01.mp3"],
+    lofi: ["lofi_01.mp3", "lofi_02.mp3"],
     adhd_music: ["focus_01.mp3"],
-    instrumental: [],
-    classical: [],
-    classic_rock: [],
-    ambient: [],
-    brown_noise: ["brown_01.wav"],
-    white_noise: ["white_01.wav"]
+    instrumental: ["instrimental_01.mp3"],,
+    classical: [ "classical_01.mp3"],
+    classic_rock: ["classic_rock_01.mp3"],
+    ambient: ["ambient_01.mp3"],
+    brown_noise: ["brown_01.mp3"],
+    white_noise: ["white_01.mp3"]
   };
 
   const musicCategory = $("musicCategory");
@@ -421,6 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderAnalytics();
   };
 });
+
 
 
 
