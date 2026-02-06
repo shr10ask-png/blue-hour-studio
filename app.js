@@ -327,13 +327,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const cat = musicCategory.value;
     return { cat, list: PLAYLISTS[cat] || [] };
   }
+function loadTrack(i){
+  const { cat, list } = currentList();
+  if (!list.length) return false;
 
-  function loadTrack(i){
-    const { cat, list } = currentList();
-    if(!list.length) return false;
-    currentIndex = (i + list.length) % list.length;
-    musicPlayer.src = `music_select/${cat}/${list[currentIndex]}`;
-    musicPlayer.loop = (cat === "brown_noise" || cat === "white_noise" || list.length === 1);
+  currentIndex = (i + list.length) % list.length;
+  musicPlayer.src = `./music_select/${cat}/${list[currentIndex]}`;
+
+  musicPlayer.loop =
+    cat === "brown_noise" ||
+    cat === "white_noise" ||
+    list.length === 1;
+
+  return true;
+}
+
+
 
     return true;
   }
@@ -441,6 +450,7 @@ musicPlayer.addEventListener("ended", async () => {
 
 
    
+
 
 
 
