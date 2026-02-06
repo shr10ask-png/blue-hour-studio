@@ -332,12 +332,12 @@ function loadTrack(i){
   if (!list.length) return false;
 
   currentIndex = (i + list.length) % list.length;
-  musicPlayer.src = `./music_select/${cat}/${list[currentIndex]}`;
+  musicPlayer.src = `. /music_select/${cat}/${list[currentIndex]}`;
 
   musicPlayer.loop =
     cat === "brown_noise" ||
     cat === "white_noise" ||
-    list.length === 1;
+    list. length === 1;
 
   return true;
 }
@@ -450,6 +450,7 @@ musicPlayer.addEventListener("ended", async () => {
 
 
    
+
 
 
 
