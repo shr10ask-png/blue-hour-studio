@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blue Hour Studio</title>
+
+  <!-- Fonts: aesthetic (sans) + old school (serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body data-theme="bluehour" data-font="aesthetic">
+
+  <!-- Background layer (image/video applied via Background panel) -->
+  <div class="bg-layer" id="bgLayer"></div>
+
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-text">
+        <div class="brand-title">Blue Hour Studio</div>
+        <div class="brand-subtitle">before the world wakes</div>
+      </div>
+    </div>
+
+    <!-- Widgets -->
+    <div class="widgets" aria-label="Widgets">
+      <button id="openBackgroundBtn" class="widget-btn" title="Background" aria-label="Open background">
+        🖼
+      </button>
+      <button id="openAnalyticsBtn" class="widget-btn" title="Analytics" aria-label="Open analytics">
+        ⌁
+      </button>
+      <button id="openSettingsBtn" class="widget-btn" title="Settings" aria-label="Open settings">
+        ⚙
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="layout">
+
+    <!-- TIMER (big) -->
+    <section class="card timer-card">
+      <div class="modes">
+        <button class="mode is-active" data-mode="pomodoro">Pomodoro</button>
+        <button class="mode" data-mode="short">Short Break</button>
+        <button class="mode" data-mode="long">Long Break</button>
+      </div>
+
+      <div class="timer">
+        <div class="time" id="timeDisplay">25:00</div>
+        <div class="status" id="statusText">Ready.</div>
+      </div>
+
+      <div class="controls">
+        <button id="startPauseBtn" class="primary">Start</button>
+        <button id="resetBtn" class="secondary">Reset</button>
+      </div>
+
+      <!-- Quote (centered) -->
+      <div class="quote" id="quoteBox">
+        <div class="quote-text" id="quoteText">
+          “Be regular and orderly in your life, so that you may be violent and original in your work.”
+        </div>
+        <div class="quote-author" id="quoteAuthor">— Gustave Flaubert</div>
+      </div>
+    </section>
+
+    <!-- MUSIC (smaller under timer) -->
+    <section class="card music-card">
+      <div class="card-title">Music Select</div>
+
+      <div class="music-ui">
+        <label class="field">
+          <span>Category</span>
+          <select id="musicCategory">
+            <option value="lofi">Lo-fi</option>
+            <option value="adhd_music">ADHD Music</option>
+            <option value="instrumental">Instrumental</option>
+            <option value="classical">Classical</option>
+            <option value="classic_rock">Classic Rock</option>
+            <option value="ambient">Ambient</option>
+            <option value="brown_noise">Brown Noise</option>
+            <option value="white_noise">White Noise</option>
+          </select>
+        </label>
+
+        <div class="music-controls">
+          <button id="musicPlayBtn" class="secondary">Play</button>
+          <button id="musicNextBtn" class="ghost">Next</button>
+          <button id="musicStopBtn" class="ghost">Stop</button>
+        </div>
+
+        <label class="field">
+          <span>Volume</span>
+          <input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.65">
+        </label>
+
+        <div class="muted small">
+          Put files into <code>music_select/&lt;category&gt;/</code> and list filenames in <code>app.js</code> (PLAYLISTS).
+        </div>
+
+        <audio id="musicPlayer" preload="none"></audio>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SETTINGS PANEL -->
+  <div id="settingsOverlay" class="overlay is-hidden" aria-hidden="true">
+    <div class="panel" role="dialog" aria-modal="true" aria-label="Settings">
+      <div class="panel-head">
+        <div class="panel-title">Settings</div>
+        <button id="closeSettingsBtn" class="ghost" aria-label="Close settings">Close</button>
+      </div>
+
+      <div class="panel-body">
+        <div class="settings-grid">
+          <label class="field">
+            <span>Pomodoro (min)</span>
+            <input id="pomodoroMin" type="number" min="1" max="120" value="25">
+          </label>
+
+          <label class="field">
+            <span>Short break (min)</span>
+            <input id="shortMin" type="number" min="1" max="60" value="5">
+          </label>
+
+          <label class="field">
+            <span>Long break (min)</span>
+            <input id="longMin" type="number" min="1" max="90" value="15">
+          </label>
+
+          <!-- 4 alarm options -->
+          <label class="field">
+            <span>Alarm</span>
+            <select id="alarmSelect">
+              <option value="soft">Soft</option>
+              <option value="bell">Bell</option>
+              <option value="digital">Digital</option>
+              <option value="chime">Chime</option>
+            </select>
+          </label>
+
+          <!-- Theme moved here (no dots) -->
+          <label class="field">
+            <span>Theme</span>
+            <select id="themeSelect">
+              <option value="bluehour">Blue Hour</option>
+              <option value="sagemorning">Sage Morning</option>
+              <option value="sakuradawn">Sakura Dawn</option>
+              <option value="deepnight">Deep Night</option>
+              <option value="vividfocus">Vivid Focus</option>
+            </select>
+          </label>
+
+          <!-- Font style selector -->
+          <label class="field">
+            <span>Typography</span>
+            <select id="fontSelect">
+              <option value="aesthetic">Aesthetic (Sans)</option>
+              <option value="oldschool">Old School (Serif)</option>
+            </select>
+          </label>
+
+          <label class="field switch-field">
+            <span>Auto next</span>
+            <input id="autoNext" type="checkbox">
+          </label>
+        </div>
+
+        <div class="muted small">
+          Tip: Keep it minimal. Your mind will do the rest.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYTICS PANEL (with chart) -->
+  <div id="analyticsOverlay" class="overlay is-hidden" aria-hidden="true">
+    <div class="panel" role="dialog" aria-modal="true" aria-label="Analytics">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Weekly Analytics</div>
+          <div class="muted small">Last 7 days: focus minutes & completed pomodoros.</div>
+        </div>
+        <button id="closeAnalyticsBtn" class="ghost" aria-label="Close analytics">Close</button>
+      </div>
+
+      <div class="panel-body">
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Total focus (7 days)</div>
+            <div class="stat-value" id="weekMinutes">0 min</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Pomodoros (7 days)</div>
+            <div class="stat-value" id="weekSessions">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Today</div>
+            <div class="stat-value" id="todayMinutes">0 min</div>
+          </div>
+        </div>
+
+        <canvas id="weekChart" width="900" height="280"></canvas>
+
+        <div class="panel-actions">
+          <button id="clearDataBtn" class="ghost danger">Clear data</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACKGROUND PANEL -->
+  <div id="backgroundOverlay" class="overlay is-hidden" aria-hidden="true">
+    <div class="panel" role="dialog" aria-modal="true" aria-label="Background">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Background</div>
+          <div class="muted small">Use your own images/videos (recommended: calm, natural, slow).</div>
+        </div>
+        <button id="closeBackgroundBtn" class="ghost" aria-label="Close background">Close</button>
+      </div>
+
+      <div class="panel-body">
+        <div class="bg-grid">
+          <label class="field">
+            <span>Type</span>
+            <select id="bgType">
+              <option value="image">Image</option>
+              <option value="video">Video</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Path (relative)</span>
+            <input id="bgPath" type="text" placeholder="assets/backgrounds/yourfile.jpg">
+          </label>
+
+          <button id="applyBgBtn" class="secondary">Apply</button>
+          <button id="clearBgBtn" class="ghost danger">Clear</button>
+        </div>
+
+        <div class="bg-sliders">
+          <label class="field">
+            <span>Opacity</span>
+            <input id="bgOpacity" type="range" min="0" max="1" step="0.01" value="0.28">
+          </label>
+          <label class="field">
+            <span>Blur</span>
+            <input id="bgBlur" type="range" min="0" max="24" step="1" value="10">
+          </label>
+        </div>
+
+        <div class="muted small">
+          Put backgrounds into <code>assets/backgrounds/</code>, then paste the path above.
+          For videos: <code>.mp4</code> works best.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="muted small">by Seher Asik</div>
+  </footer>
+
+  <!-- Audio -->
+  <audio id="alarmAudio" preload="auto"></audio>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
