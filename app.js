@@ -333,7 +333,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if(!list.length) return false;
     currentIndex = (i + list.length) % list.length;
     musicPlayer.src = `music_select/${cat}/${list[currentIndex]}`;
-    musicPlayer.loop = (cat === "brown_noise" || cat === "white_noise");
+    musicPlayer.loop = (cat === "brown_noise" || cat === "white_noise" || list.length === 1);
+
     return true;
   }
 
@@ -361,7 +362,22 @@ document.addEventListener("DOMContentLoaded", () => {
     musicPlayer.src = "";
     setStatus("Ready.");
   };
+musicPlayer.addEventListener("ended", async () => {
+  const { cat, list } = currentList();
+  if (!list.length) return;
 
+  // Noise zaten loop
+  if (cat === "brown_noise" || cat === "white_noise") return;
+
+  // Sonraki track; bittiyse başa sar
+  const nextIndex = (currentIndex + 1) % list.length;
+
+  const ok = loadTrack(nextIndex);
+  if (!ok) return;
+
+  try { await musicPlayer.play(); } catch {}
+});
+   
   /* =======================
      ANALYTICS (WEEKLY)
      ======================= */
@@ -425,6 +441,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
    
+
 
 
 
