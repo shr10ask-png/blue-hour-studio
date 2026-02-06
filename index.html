@@ -1,12 +1,11 @@
-<!-- rebuild -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Blue Hour Studio</title>
 
-  <!-- Fonts: aesthetic (sans) + old school (serif) -->
+  <!-- Fonts (2 styles) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
@@ -16,35 +15,61 @@
 
 <body data-theme="bluehour" data-font="aesthetic">
 
-  <!-- Background layer (image/video applied via Background panel) -->
-  <div class="bg-layer" id="bgLayer"></div>
+  <!-- Background layer (controlled by Background panel) -->
+  <div class="bg-layer" id="bgLayer" aria-hidden="true"></div>
+  <div class="bg-overlay" aria-hidden="true"></div>
 
-  <!-- HEADER -->
   <header class="topbar">
     <div class="brand">
+      <div class="brand-mark" aria-hidden="true"></div>
       <div class="brand-text">
         <div class="brand-title">Blue Hour Studio</div>
         <div class="brand-subtitle">before the world wakes</div>
       </div>
     </div>
 
-    <!-- Widgets -->
-    <div class="widgets" aria-label="Widgets">
-      <button id="openBackgroundBtn" class="widget-btn" title="Background" aria-label="Open background">
-        🖼
+    <div class="top-actions">
+      <!-- Theme dots -->
+      <div class="theme-switch" aria-label="Theme switcher">
+        <button class="theme-dot is-active" data-set-theme="bluehour" title="Blue Hour"></button>
+        <button class="theme-dot" data-set-theme="sagemorning" title="Sage Morning"></button>
+        <button class="theme-dot" data-set-theme="sakuradawn" title="Sakura Dawn"></button>
+        <button class="theme-dot" data-set-theme="deepnight" title="Deep Night"></button>
+        <button class="theme-dot" data-set-theme="vividfocus" title="Vivid Focus"></button>
+      </div>
+
+      <!-- Top right icons -->
+      <button class="icon-btn" id="openBgBtn" title="Background">
+        <!-- photo icon -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5zm2 0v14h12V5H6zm2 3a2 2 0 1 0 0.001 4.001A2 2 0 0 0 8 8zm1.5 11 2.5-3 1.8 2.2 2.7-3.4 3.5 4.2H7.5z"/>
+        </svg>
       </button>
-      <button id="openAnalyticsBtn" class="widget-btn" title="Analytics" aria-label="Open analytics">
-        ⌁
+
+      <button class="icon-btn" id="openFontBtn" title="Font">
+        <!-- font icon -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 20h2l1.6-4h6.8L17 20h2L12.9 4h-1.8L5 20zm4.2-6 2.3-6 2.3 6H9.2z"/>
+        </svg>
       </button>
-      <button id="openSettingsBtn" class="widget-btn" title="Settings" aria-label="Open settings">
-        ⚙
+
+      <button class="icon-btn" id="openSettingsBtn" title="Settings">
+        <!-- gear icon -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.1 7.1 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 12.9 1h-3.8a.5.5 0 0 0-.49.41l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L1.71 7.47a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L1.83 14.5a.5.5 0 0 0-.12.64l1.92 3.32c.13.23.4.32.64.22l2.39-.96c.51.4 1.05.71 1.63.94l.36 2.54c.04.24.25.41.49.41h3.8c.24 0 .45-.17.49-.41l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.24.1.51.01.64-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM11 15.5A3.5 3.5 0 1 1 11 8.5a3.5 3.5 0 0 1 0 7z"/>
+        </svg>
+      </button>
+
+      <button class="icon-btn" id="openAnalyticsBtn" title="Analytics">
+        <!-- chart icon -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 19h16v2H2V3h2v16zm4-2H6V9h2v8zm5 0h-2V5h2v12zm5 0h-2v-6h2v6z"/>
+        </svg>
       </button>
     </div>
   </header>
 
-  <!-- MAIN -->
   <main class="layout">
-
     <!-- TIMER (big) -->
     <section class="card timer-card">
       <div class="modes">
@@ -63,7 +88,6 @@
         <button id="resetBtn" class="secondary">Reset</button>
       </div>
 
-      <!-- Quote (centered) -->
       <div class="quote" id="quoteBox">
         <div class="quote-text" id="quoteText">
           “Be regular and orderly in your life, so that you may be violent and original in your work.”
@@ -81,7 +105,7 @@
           <span>Category</span>
           <select id="musicCategory">
             <option value="lofi">Lo-fi</option>
-            <option value="adhd_music">ADHD Music</option>
+            <option value="adhd_music">ADHD / Focus</option>
             <option value="instrumental">Instrumental</option>
             <option value="classical">Classical</option>
             <option value="classic_rock">Classic Rock</option>
@@ -99,73 +123,53 @@
 
         <label class="field">
           <span>Volume</span>
-          <input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.65">
+          <input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.6" />
         </label>
 
-        <div class="muted small">
-          Put files into <code>music_select/&lt;category&gt;/</code> and list filenames in <code>app.js</code> (PLAYLISTS).
-        </div>
+        <div class="muted small" id="nowPlaying">Not playing.</div>
 
-        <audio id="musicPlayer" preload="none"></audio>
+        <audio id="musicPlayer" preload="none" crossorigin="anonymous"></audio>
       </div>
     </section>
-
   </main>
 
-  <!-- SETTINGS PANEL -->
-  <div id="settingsOverlay" class="overlay is-hidden" aria-hidden="true">
-    <div class="panel" role="dialog" aria-modal="true" aria-label="Settings">
-      <div class="panel-head">
-        <div class="panel-title">Settings</div>
-        <button id="closeSettingsBtn" class="ghost" aria-label="Close settings">Close</button>
+  <!-- ===== MODALS ===== -->
+
+  <!-- SETTINGS MODAL -->
+  <div class="modal" id="settingsModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title">Session Settings</div>
+          <div class="muted small">Adjust durations & alarm.</div>
+        </div>
+        <button class="icon-btn" data-close-modal="settingsModal" title="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.29 19.71 2.88 18.29 9.17 12 2.88 5.71 4.29 4.29l6.3 6.3 6.29-6.3z"/></svg>
+        </button>
       </div>
 
-      <div class="panel-body">
+      <div class="modal-body">
         <div class="settings-grid">
           <label class="field">
             <span>Pomodoro (min)</span>
             <input id="pomodoroMin" type="number" min="1" max="120" value="25">
           </label>
-
           <label class="field">
-            <span>Short break (min)</span>
+            <span>Short Break (min)</span>
             <input id="shortMin" type="number" min="1" max="60" value="5">
           </label>
-
           <label class="field">
-            <span>Long break (min)</span>
+            <span>Long Break (min)</span>
             <input id="longMin" type="number" min="1" max="90" value="15">
           </label>
 
-          <!-- 4 alarm options -->
           <label class="field">
-            <span>Alarm</span>
+            <span>Alarm sound</span>
             <select id="alarmSelect">
               <option value="soft">Soft</option>
               <option value="bell">Bell</option>
               <option value="digital">Digital</option>
-              <option value="chime">Chime</option>
-            </select>
-          </label>
-
-          <!-- Theme moved here (no dots) -->
-          <label class="field">
-            <span>Theme</span>
-            <select id="themeSelect">
-              <option value="bluehour">Blue Hour</option>
-              <option value="sagemorning">Sage Morning</option>
-              <option value="sakuradawn">Sakura Dawn</option>
-              <option value="deepnight">Deep Night</option>
-              <option value="vividfocus">Vivid Focus</option>
-            </select>
-          </label>
-
-          <!-- Font style selector -->
-          <label class="field">
-            <span>Typography</span>
-            <select id="fontSelect">
-              <option value="aesthetic">Aesthetic (Sans)</option>
-              <option value="oldschool">Old School (Serif)</option>
+              <option value="none">Off</option>
             </select>
           </label>
 
@@ -175,25 +179,28 @@
           </label>
         </div>
 
-        <div class="muted small">
-          Tip: Keep it minimal. Your mind will do the rest.
+        <div class="modal-actions">
+          <button id="saveSettingsBtn" class="primary">Save</button>
+          <button class="ghost" data-close-modal="settingsModal">Close</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ANALYTICS PANEL (with chart) -->
-  <div id="analyticsOverlay" class="overlay is-hidden" aria-hidden="true">
-    <div class="panel" role="dialog" aria-modal="true" aria-label="Analytics">
-      <div class="panel-head">
+  <!-- ANALYTICS MODAL -->
+  <div class="modal" id="analyticsModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
         <div>
-          <div class="panel-title">Weekly Analytics</div>
-          <div class="muted small">Last 7 days: focus minutes & completed pomodoros.</div>
+          <div class="modal-title">Weekly Analytics</div>
+          <div class="muted small">Last 7 days focus minutes & completed pomodoros.</div>
         </div>
-        <button id="closeAnalyticsBtn" class="ghost" aria-label="Close analytics">Close</button>
+        <button class="icon-btn" data-close-modal="analyticsModal" title="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.29 19.71 2.88 18.29 9.17 12 2.88 5.71 4.29 4.29l6.3 6.3 6.29-6.3z"/></svg>
+        </button>
       </div>
 
-      <div class="panel-body">
+      <div class="modal-body">
         <div class="stats">
           <div class="stat">
             <div class="stat-label">Total focus (7 days)</div>
@@ -211,26 +218,36 @@
 
         <canvas id="weekChart" width="900" height="280"></canvas>
 
-        <div class="panel-actions">
+        <div class="modal-actions">
           <button id="clearDataBtn" class="ghost danger">Clear data</button>
+          <button class="ghost" data-close-modal="analyticsModal">Close</button>
         </div>
+
+        <div class="muted small">Data is stored locally in your browser.</div>
       </div>
     </div>
   </div>
 
-  <!-- BACKGROUND PANEL -->
-  <div id="backgroundOverlay" class="overlay is-hidden" aria-hidden="true">
-    <div class="panel" role="dialog" aria-modal="true" aria-label="Background">
-      <div class="panel-head">
+  <!-- BACKGROUND MODAL -->
+  <div class="modal" id="bgModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
         <div>
-          <div class="panel-title">Background</div>
-          <div class="muted small">Use your own images/videos (recommended: calm, natural, slow).</div>
+          <div class="modal-title">Background</div>
+          <div class="muted small">Use a local image/video path (recommended) or a direct URL.</div>
         </div>
-        <button id="closeBackgroundBtn" class="ghost" aria-label="Close background">Close</button>
+        <button class="icon-btn" data-close-modal="bgModal" title="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.29 19.71 2.88 18.29 9.17 12 2.88 5.71 4.29 4.29l6.3 6.3 6.29-6.3z"/></svg>
+        </button>
       </div>
 
-      <div class="panel-body">
-        <div class="bg-grid">
+      <div class="modal-body">
+        <div class="settings-grid">
+          <label class="field" style="grid-column: 1 / -1;">
+            <span>Image or video path</span>
+            <input id="bgInput" type="text" placeholder="assets/backgrounds/bluehour.jpg   OR   assets/videos/rain.mp4">
+          </label>
+
           <label class="field">
             <span>Type</span>
             <select id="bgType">
@@ -240,28 +257,55 @@
           </label>
 
           <label class="field">
-            <span>Path (relative)</span>
-            <input id="bgPath" type="text" placeholder="assets/backgrounds/yourfile.jpg">
+            <span>Dim overlay</span>
+            <select id="bgDim">
+              <option value="0.25">Light</option>
+              <option value="0.38" selected>Medium</option>
+              <option value="0.50">Strong</option>
+            </select>
           </label>
-
-          <button id="applyBgBtn" class="secondary">Apply</button>
-          <button id="clearBgBtn" class="ghost danger">Clear</button>
         </div>
 
-        <div class="bg-sliders">
-          <label class="field">
-            <span>Opacity</span>
-            <input id="bgOpacity" type="range" min="0" max="1" step="0.01" value="0.28">
-          </label>
-          <label class="field">
-            <span>Blur</span>
-            <input id="bgBlur" type="range" min="0" max="24" step="1" value="10">
-          </label>
+        <div class="modal-actions">
+          <button id="applyBgBtn" class="primary">Apply</button>
+          <button id="clearBgBtn" class="ghost danger">Clear</button>
+          <button class="ghost" data-close-modal="bgModal">Close</button>
         </div>
 
         <div class="muted small">
-          Put backgrounds into <code>assets/backgrounds/</code>, then paste the path above.
-          For videos: <code>.mp4</code> works best.
+          Tip: Put files in <code>assets/backgrounds/</code> or <code>assets/videos/</code> and reference them like <code>assets/backgrounds/your.jpg</code>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FONT MODAL -->
+  <div class="modal" id="fontModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title">Typography</div>
+          <div class="muted small">Choose your vibe.</div>
+        </div>
+        <button class="icon-btn" data-close-modal="fontModal" title="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.29 19.71 2.88 18.29 9.17 12 2.88 5.71 4.29 4.29l6.3 6.3 6.29-6.3z"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="font-grid">
+          <button class="font-card" data-font="aesthetic">
+            <div class="font-name">Aesthetic</div>
+            <div class="font-sample">DM Sans — clean, modern, soft.</div>
+          </button>
+          <button class="font-card" data-font="oldschool">
+            <div class="font-name">Old School</div>
+            <div class="font-sample">Libre Baskerville — classic, academic.</div>
+          </button>
+        </div>
+
+        <div class="modal-actions">
+          <button class="ghost" data-close-modal="fontModal">Close</button>
         </div>
       </div>
     </div>
@@ -271,12 +315,10 @@
     <div class="muted small">by Seher Asik</div>
   </footer>
 
-  <!-- Audio -->
-  <audio id="alarmAudio" preload="auto"></audio>
-
   <script src="app.js"></script>
 </body>
 </html>
+
 
 
 
