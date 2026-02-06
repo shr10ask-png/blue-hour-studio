@@ -199,106 +199,94 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   setRandomQuote();
 
-  /* =======================
-     TIMER + ALARM
-     ======================= */
-  const timeDisplay = $("timeDisplay");
-  const statusText = $("statusText");
-  const startPauseBtn = $("startPauseBtn");
-  const resetBtn = $("resetBtn");
-  const pomodoroMin = $("pomodoroMin");
-  const shortMin = $("shortMin");
-  const longMin = $("longMin");
-  const autoNext = $("autoNext");
-  const alarmSelect = $("alarmSelect");
-  const alarmAudio = $("alarmAudio");
-  const modeBtns = Array.from(document.querySelectorAll(".mode"));
+// ===============================
+// POMODORO TIMER CORE (FINAL)
+// ===============================
 
-  let mode = "pomodoro";
-  let running = false;
-  let remainSec = 25 * 60;
-  let timerId = null;
+const MODES = {
+  pomodoro: 25 * 60,
+  short: 5 * 60,
+  long: 15 * 60
+};
 
-  function pad(n){ return String(n).padStart(2,"0"); }
-  function renderTime(){
-    const m = Math.floor(remainSec/60);
-    const s = remainSec%60;
-    if(timeDisplay) timeDisplay.textContent = `${pad(m)}:${pad(s)}`;
-  }
-  function setStatus(msg){ if(statusText) statusText.textContent = msg; }
+let currentMode = "pomodoro";
+let timeLeft = MODES[currentMode];
+let timer = null;
+let isRunning = false;
 
-  function durations(){
-    return {
-      pomodoro: Number(pomodoroMin?.value || 25),
-      short: Number(shortMin?.value || 5),
-      long: Number(longMin?.value || 15)
-    };
-  }
+// Elements
+const timeDisplay = document.getElementById("timeDisplay");
+const statusText = document.getElementById("statusText");
+const startPauseBtn = document.getElementById("startPauseBtn");
+const resetBtn = document.getElementById("resetBtn");
+const modeButtons = document.querySelectorAll(".mode");
 
-  function stopTimer(){
-    clearInterval(timerId);
-    timerId = null;
-    running = false;
-    startPauseBtn.textContent = "Start";
-  }
+// ---------- Helpers ----------
+function updateDisplay() {
+  const min = Math.floor(timeLeft / 60).toString().padStart(2, "0");
+  const sec = (timeLeft % 60).toString().padStart(2, "0");
+  timeDisplay.textContent = `${min}:${sec}`;
+}
 
-  function resetTimer(){
-    stopTimer();
-    remainSec = durations()[mode] * 60;
-    renderTime();
+function setStatus(text) {
+  statusText.textContent = text;
+}
+
+// ---------- Mode change ----------
+modeButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (isRunning) return;
+
+    modeButtons.forEach(b => b.classList.remove("is-active"));
+    btn.classList.add("is-active");
+
+    currentMode = btn.dataset.mode;
+    timeLeft = MODES[currentMode];
+    updateDisplay();
     setStatus("Ready.");
-  }
+  });
+});
 
-  function startTimer(){
-    if(running) return;
-    running = true;
+// ---------- Start / Pause ----------
+startPauseBtn.addEventListener("click", () => {
+  if (!isRunning) {
+    isRunning = true;
     startPauseBtn.textContent = "Pause";
-    setRandomQuote();
-    timerId = setInterval(tick, 1000);
-  }
+    setStatus("Focusing…");
 
-  function setMode(m){
-    mode = m;
-    modeBtns.forEach(b => b.classList.toggle("is-active", b.dataset.mode === m));
-    resetTimer();
-  }
+    timer = setInterval(() => {
+      timeLeft--;
+      updateDisplay();
 
-  function makeTone(freq){
-    const ctx = new AudioContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.frequency.value = freq;
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    gain.gain.value = 0.25;
-    osc.start();
-    osc.stop(ctx.currentTime + 0.3);
-  }
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        isRunning = false;
+        startPauseBtn.textContent = "Start";
+        setStatus("Session complete.");
+      }
+    }, 1000);
 
-  function playAlarm(){
-    const a = alarmSelect?.value || "soft";
-    if(a === "bell") makeTone(880);
-    else if(a === "digital") makeTone(1320);
-    else if(a === "chime") makeTone(660);
-    else makeTone(440);
+  } else {
+    clearInterval(timer);
+    isRunning = false;
+    startPauseBtn.textContent = "Start";
+    setStatus("Paused.");
   }
+});
 
-  function tick(){
-    remainSec--;
-    if(remainSec <= 0){
-      stopTimer();
-      renderTime();
-      playAlarm();
-      setStatus("Done.");
-      return;
-    }
-    renderTime();
-  }
+// ---------- Reset ----------
+resetBtn.addEventListener("click", () => {
+  clearInterval(timer);
+  isRunning = false;
+  startPauseBtn.textContent = "Start";
+  timeLeft = MODES[currentMode];
+  updateDisplay();
+  setStatus("Ready.");
+});
 
-  modeBtns.forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
-  startPauseBtn?.addEventListener("click", () => running ? stopTimer() : startTimer());
-  resetBtn?.addEventListener("click", resetTimer);
-  setMode("pomodoro");
+// Init
+updateDisplay();
+
 
   /* =======================
      MUSIC (FINAL)
@@ -450,6 +438,7 @@ musicPlayer.addEventListener("ended", async () => {
 
 
    
+
 
 
 
