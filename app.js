@@ -586,11 +586,21 @@
     return { cat, list: PLAYLISTS[cat] || [] };
   }
 
-  function loadTrack(i) {
-    const { cat, list } = currentList();
-    if (!list.length) return false;
+function loadTrack(i){
+  const { cat, list } = currentList();
+  if (!list.length) return false;
 
-    currentIndex = (i + list.length) % list.length;
+  currentIndex = (i + list.length) % list.length;
+  musicPlayer.src = `./music_select/${cat}/${list[currentIndex]}`;
+  musicPlayer.load();
+
+  musicPlayer.loop =
+    cat === "brown_noise" ||
+    cat === "white_noise" ||
+    list.length === 1;
+
+  return true;
+}
 
     // IMPORTANT: use ./ for GitHub Pages
     musicPlayer.src = `./music_select/${cat}/${list[currentIndex]}`;
@@ -689,3 +699,4 @@
   updateDisplay();
   setStatus("Ready.");
 })();
+
